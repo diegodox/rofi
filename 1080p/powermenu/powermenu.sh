@@ -81,7 +81,13 @@ case $chosen in
         ;;
     $lock)
 		if [[ -f /usr/bin/i3lock ]]; then
-			i3lock
+            BGCOLOR="000000"
+            SCREEN_RESOLUTION="$(xdpyinfo | grep dimensions | cut -d' ' -f7)"
+            convert "$HOME/.wallpaper/share_bg/archlinux/archwave.png" \
+                -gravity Center \
+                -background $BGCOLOR \
+                -extent "$SCREEN_RESOLUTION" RGB:- \
+                | i3lock --raw "$SCREEN_RESOLUTION":rgb -c $BGCOLOR -i /dev/stdin
 		elif [[ -f /usr/bin/betterlockscreen ]]; then
 			betterlockscreen -l
 		fi
